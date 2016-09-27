@@ -1,3 +1,6 @@
 venv
 *.pyc
 staticfiles
+.idea/
+db.sqlite3
+ghs/__pycache__/
