@@ -5,4 +5,3 @@ staticfiles
 db.sqlite3
 ghs/__pycache__/
 .DS_Store
-*.xml
