@@ -3,10 +3,24 @@ from django.conf import settings
 
 BUCKET = settings.BUCKET
 
-def upload_file(file, folder):
+def upload_file(file, key):
+    try:
+        file_name = key
+        file_content = file.read()
+        s3 = boto3.resource('s3')
+        s3.Object(BUCKET, file_name).put(Body=file_content)
+        return True
+    except Exception as e:
+        print("ERROR: There was an error uploading the file: {e}".format(e=e))
+
+def read_file(key):
     s3 = boto3.resource('s3')
-    path = '{file}'.format(folder=folder, file=file)
-    s3.Object(BUCKET, file).put(Body=open(path, 'rb'))
+    file_contents = s3.Object(BUCKET, key).get()['Body'].read()
+    return file_contents
+
+def delete_file(key):
+    s3 = boto3.resource('s3')
+    s3.Object(BUCKET, key).delete()
 
 
 def read_all_files():

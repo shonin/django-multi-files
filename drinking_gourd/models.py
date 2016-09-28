@@ -2,6 +2,7 @@ from time import gmtime, strftime
 from django.db import models
 
 class File(models.Model):
+    # file = models.FileField(upload_to=upload_file(), blank=True)
     name = models.CharField(max_length=300)
     description = models.TextField(blank=True)
     upload_date = models.CharField(max_length=100, default=strftime("%Y%m%d%H%M%S", gmtime()))

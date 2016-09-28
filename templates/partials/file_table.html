@@ -1,0 +1,21 @@
+<table class="list-files-table">
+    <tr>
+        <th>File Name</th>
+        <th>Description</th>
+        <th>Upload Date</th>
+        <th>File Key</th>
+        <th>Edit</th>
+    </tr>
+    {% for file in files %}
+        <tr>
+            <td>{{ file.name }}</td>
+            <td>{{ file.description }}</td>
+            <td>{{ file.upload_date }}</td>
+            <td>{{ file.key }}</td>
+            <td><a href="{% url 'drinking_gourd:edit_file' file.id %}">
+                    <button class="btn-default btn">Edit</button>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

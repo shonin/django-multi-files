@@ -2,6 +2,7 @@ boto3==1.4.0
 botocore==1.4.57
 dj-database-url==0.4.1
 Django==1.9.8
+django-multiupload==0.5.1
 docutils==0.12
 gunicorn==19.6.0
 jmespath==0.9.0

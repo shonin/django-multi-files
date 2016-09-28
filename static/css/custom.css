@@ -1,0 +1,4 @@
+.list-files-table th, .list-files-table td {
+    border: 1px #bbbbbb solid;
+    padding: 10px;
+}
