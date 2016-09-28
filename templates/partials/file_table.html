@@ -5,6 +5,7 @@
         <th>Upload Date</th>
         <th>File Key</th>
         <th>Edit</th>
+        <th>Delete</th>
     </tr>
     {% for file in files %}
         <tr>
@@ -14,6 +15,10 @@
             <td>{{ file.key }}</td>
             <td><a href="{% url 'drinking_gourd:edit_file' file.id %}">
                     <button class="btn-default btn">Edit</button>
+                </a>
+            </td>
+            <td><a href="{% url 'drinking_gourd:delete_file' file.id %}">
+                    <button class="btn-warning btn">Delete</button>
                 </a>
             </td>
         </tr>
