@@ -1,31 +1,27 @@
-"""
-Django settings for ghs project on Heroku. Fore more info, see:
-https://github.com/heroku/heroku-django-template
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.9/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.9/ref/settings/
-"""
-
 import os
 import dj_database_url
+
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'prod')
+
+IS_PRODUCTION = ENVIRONMENT == 'prod'
+IS_TEST = ENVIRONMENT == 'test'
+IS_DEVELOPMENT = not (IS_PRODUCTION or IS_TEST)
+
+DEBUG = IS_DEVELOPMENT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+if IS_DEVELOPMENT:
+    SECRET_KEY = '7gieo1taa&c2s2k1&(wx2qemcf_)av11qfh%uxwg64^q(_lv@p'
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY', '7gieo1taa&c2s2k1&(wx2qemcf_)av11qfh%uxwg64^q(_lv@p')
+
+# Custom Strings
+
+BUCKET = 'drinking-gourd'
 LOGIN_REDIRECT_URL = '/'
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "pnafxfzm3^0y1p%b*-sc%w$8bqnw9-29o11k@8=pkvgfzd_!f7"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 # Application definition
 
@@ -36,11 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # Disable Django's own staticfiles handling in favour of WhiteNoise, for
-    # greater consistency between gunicorn and `./manage.py runserver`. See:
-    # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', # disable if issues between prod and dev
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -139,5 +132,3 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-S3DIRECT_REGION = 'us-east-1'
