@@ -5,6 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="jumbotron">
+            <p><a href="{% url 'drinking_gourd:home' %}"><- Go Back</a></p>
             <h4>Editing: {{ file.name }}</h4>
             <audio controls>
               <source src="https://s3.amazonaws.com/drinking-gourd/{{ file.key }}" type="audio/mpeg">
