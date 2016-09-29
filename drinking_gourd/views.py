@@ -1,7 +1,7 @@
 import json, datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import FormView, UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
@@ -10,8 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import boto3
 
 from drinking_gourd.models import File
-from drinking_gourd.forms import UploadForm
-from drinking_gourd.helpers.s3_helper import upload_file, delete_file
+from drinking_gourd.helpers.s3_helper import delete_file
 
 S3_BUCKET = settings.BUCKET
 
@@ -76,22 +75,6 @@ class EditFileView(LoginRequiredMixin, UpdateView):
     fields = ['name', 'description']
     template_name = 'edit_file.html'
     success_url = '/drinkinggourd/'
-
-
-class UploadView(LoginRequiredMixin, FormView):
-    login_url = '/login/'
-
-    template_name = 'uploads/form.html'
-    form_class = UploadForm
-    success_url = '/drinkinggourd/'
-
-    def form_valid(self, form):
-        for file in form.cleaned_data['attachments']:
-            file_object = File.objects.create(name=file.name)
-            upload_file(file, file_object.key)
-
-        return super(UploadView, self).form_valid(form)
-
 
 class DeleteFileView(LoginRequiredMixin, DeleteView):
     login_url = '/login/'

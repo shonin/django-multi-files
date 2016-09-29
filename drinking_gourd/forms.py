@@ -8,16 +8,6 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(label="Password", max_length=30,
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'name': 'password'}))
 
-
-
-class UploadForm(forms.Form):
-    # If you need to upload media files, you can use this:
-    attachments = MultiFileField(
-        min_num=1,
-        max_num=50,
-        max_file_size=1024*1024*100,
-    )
-
 class EditFileForm(forms.Form):
     name = forms.CharField(label="File Name", max_length=100,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'name': 'file name'}))
