@@ -8,16 +8,6 @@
         Failed to upload file
     </div>
 
-    <label class="control-label">Name of Talk:</label> <br/>
-    <input type="text" name="name" placeholder="Name">
-
-    <br/><br />
-
-    <label class="control-label">Description of Talk:</label> <br/>
-    <textarea class="form-control" rows="3" name="description"></textarea>
-
-    <br/><br />
-
     <label class="btn btn-default btn-file">
         Select a File <input id="file-input" type="file">
     </label>
@@ -75,7 +65,6 @@
       };
       xhr.send();
     }
-
     /*
        Function called when "Upload" button is clicked. If there is a file selected, then
        start upload procedure by asking for a signed request from the app.

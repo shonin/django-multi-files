@@ -1,4 +1,4 @@
-import os, json
+import json, datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import FormView, UpdateView, DeleteView
@@ -62,6 +62,10 @@ def sign_s3(request):
 @login_required(login_url="login/")
 def home(request):
     files = File.objects.all()
+    for file in files:
+        file.upload_date = datetime.datetime.strptime(file.upload_date, "%Y%m%d%H%M%S")
+        file.upload_date = file.upload_date.strftime('%B %d, %Y')
+
     return render(request, "home.html", {'files': files})
 
 
