@@ -8,12 +8,17 @@
         Failed to upload file
     </div>
 
-    <label class="btn btn-default btn-file">
-        Select a File <input id="file-input" type="file">
-    </label>
+    Select a File <input class="btn btn-default btn-file" id="file-input" type="file">
+    <br />
+    <div style="max-width: 500px;" class="progress hidden">
+      <div class="progress-bar" role="progressbar" style="width:0%">
+      </div>
+    </div>
 
     <br /><br /><br />
   <button id="startUpload" class="btn btn-primary">Start Upload</button>
+
+
 
 {% endblock %}
 
@@ -24,6 +29,9 @@
     */
     function uploadFile(file, s3Data, url){
       const xhr = new XMLHttpRequest();
+
+      xhr.upload.addEventListener("progress", updateProgress);
+
       xhr.open('POST', s3Data.url);
       xhr.setRequestHeader('x-amz-acl', 'public-read');
       const postData = new FormData();
@@ -42,6 +50,20 @@
         }
       };
       xhr.send(postData);
+    }
+
+    /*
+      Function to monitor the upload progress and update the html to reflect that
+    */
+    function updateProgress (oEvent) {
+        console.log('updateProgress running...');
+        $('.progress').removeClass('hidden');
+      if (oEvent.lengthComputable) {
+        var percentComplete = oEvent.loaded / oEvent.total;
+        $('.progress-bar').css('width', (percentComplete)*100+'%').text(Math.floor((percentComplete)*100));
+      } else {
+        $('.progress-bar').html('Unable to calculate file size... file is uploading...')
+      }
     }
 
     /*
