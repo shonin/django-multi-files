@@ -1,43 +1,40 @@
-# Heroku Django Starter Template
+# Drinking Gourd
 
-An utterly fantastic project starter template for Django 1.9.
+*A Django app built to run on Heroku, started from [Heroku's Django Starter
+ Template](https://github.com/heroku/heroku-django-template), nice template,
+thanks.*
 
-## Features
+## What this is:
 
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise
+Users log in and upload files that get put in S3. Users can then edit the
+file to change the name and add a description. They can delete the file, which
+will also remove it from S3.
 
-## How to Use
+Meant to be used to manage pre-production podcast recordings
 
-To use this project, follow these steps:
+## But what is it really?
 
-1. Create your working environment.
-2. Install Django (`$ pip install django`)
-3. Create a new project using this template
+* Django Auth
+* Boto3 to wrap the S3 API
+* Direct to S3 uploads via javascript, preferable to having an open connection
+to the server while yuge files upload.
+* Bootstrap and jQuery
+* [WhiteNoise](https://warehouse.python.org/project/whitenoise/) for handling
+static assets on Heroku
 
-## Creating Your Project
+## What does the future hold?
 
-Using this template to create a new Django app is easy::
+* Upload multiple files at once
+* Upload file type protection to allow only `.wma` and `.mp3`
+* Convert WMA's to MP3's
+* Automatically add an into and an exit to an MP3 file
+* Upload finished podcast files to a [Libsyn](http://www.libsyn.com) FTP Server
+and schedule them for publication.
 
-    $ django-admin.py startproject --template=https://github.com/heroku/heroku-django-template/archive/master.zip --name=Procfile helloworld
+#### thanks
 
-You can replace ``helloworld`` with your desired project name.
-
-## Deployment to Heroku
-
-    $ git init
-    $ git add -A
-    $ git commit -m "Initial commit"
-
-    $ heroku create
-    $ git push heroku master
-
-    $ heroku run python manage.py migrate
-
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
-
-## Further Reading
-
-- [Gunicorn](https://warehouse.python.org/project/gunicorn/)
-- [WhiteNoise](https://warehouse.python.org/project/whitenoise/)
-- [dj-database-url](https://warehouse.python.org/project/dj-database-url/)
+* [Heroku's Django Starter
+ Template](https://github.com/heroku/heroku-django-template)
+* @flyingsparx's  [FlaskDirectUploader](https://github.com/flyingsparx/FlaskDirectUploader)
+for a solid example of direct to s3 uploads using python and boto3
+* @narenaryan's blog post on using [Django's built in Auth](https://github.com/narenaryan/django-auth-pattern)
