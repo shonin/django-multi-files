@@ -30,6 +30,8 @@ static assets on Heroku
 * Automatically add an into and an exit to an MP3 file
 * Upload finished podcast files to a [Libsyn](http://www.libsyn.com) FTP Server
 and schedule them for publication.
+* integrate a proper user facing site that plays the podcasts, like the one
+that I already built [here](drinkinggourd.herokuapp.com).
 
 #### thanks
 
