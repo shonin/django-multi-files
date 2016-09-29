@@ -15,7 +15,7 @@ from drinking_gourd.helpers.s3_helper import delete_file
 S3_BUCKET = settings.BUCKET
 
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def direct(request):
     if not request.POST:
         return render(request, "uploads/direct.html")
@@ -58,7 +58,7 @@ def sign_s3(request):
         return HttpResponse('got a POST request')
 
 
-@login_required(login_url="login/")
+@login_required(login_url="/login/")
 def home(request):
     files = File.objects.all()
     for file in files:
