@@ -3,7 +3,6 @@ from django.utils import timezone
 
 class File(models.Model):
     name = models.CharField(max_length=300)
-    description = models.TextField(blank=True)
     upload_date = models.DateTimeField(editable=False)
     key = models.CharField(max_length=600, blank=True)
 

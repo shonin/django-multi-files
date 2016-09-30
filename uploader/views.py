@@ -1,4 +1,4 @@
-import json, datetime
+import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, DeleteView
@@ -9,8 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 import boto3
 
-from drinking_gourd.models import File
-from drinking_gourd.helpers.s3_helper import delete_file
+from uploader.models import File
+from uploader.helpers.s3_helper import delete_file
 
 S3_BUCKET = settings.BUCKET
 

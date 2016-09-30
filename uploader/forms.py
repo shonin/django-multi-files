@@ -1,6 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
-from multiupload.fields import MultiFileField
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(label="Username", max_length=30,

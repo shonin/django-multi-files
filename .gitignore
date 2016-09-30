@@ -3,6 +3,6 @@ venv
 staticfiles
 .idea/
 db.sqlite3
-ghs/__pycache__/
+project/__pycache__/
 .DS_Store
-drinking_gourd/migrations/
+uploader/migrations/

@@ -19,14 +19,16 @@ else:
     SECRET_KEY = os.getenv('SECRET_KEY', '7gieo1taa&c2s2k1&(wx2qemcf_)av11qfh%uxwg64^q(_lv@p')
 
 # Custom Strings
+BUCKET = os.getenv('AWS_BUCKET_NAME')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 
-BUCKET = 'drinking-gourd'
 LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'drinking_gourd.apps.DrinkingGourdConfig',
+    'uploader.apps.UploaderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +50,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ghs.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ghs.wsgi.application'
+WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
@@ -130,5 +132,3 @@ STATICFILES_DIRS = [
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
