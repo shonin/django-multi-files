@@ -62,8 +62,11 @@ def sign_s3(request):
 def home(request):
     files = File.objects.all()
     for file in files:
-        file.upload_date = datetime.datetime.strptime(file.upload_date, "%Y%m%d%H%M%S")
-        file.upload_date = file.upload_date.strftime('%B %d, %Y')
+        try:
+            # file.upload_date = datetime.datetime.strptime(file.upload_date, "%Y%m%d%H%M%S")
+            file.upload_date = file.upload_date.strftime('%b. %d, %Y')
+        except:
+            file.upload_date = 'whoops'
 
     return render(request, "home.html", {'files': files})
 

@@ -8,12 +8,15 @@
         Failed to upload file
     </div>
 
-    Select a File <input class="btn btn-default btn-file" id="file-input" type="file">
+    Select a File <input class="btn btn-default btn-file" id="file-input" type="file" multiple>
     <br />
-    <div style="max-width: 500px;" class="progress hidden">
-      <div class="progress-bar" role="progressbar" style="width:0%">
-      </div>
+    <div id="uploads">
+        <div style="max-width: 500px;" class="progress hidden">
+          <div class="progress-bar" role="progressbar" style="width:0%">
+          </div>
+        </div>
     </div>
+
 
     <br /><br /><br />
   <button id="startUpload" class="btn btn-primary">Start Upload</button>
@@ -28,6 +31,7 @@
       Function to carry out the actual POST request to S3 using the signed request from the Python app.
     */
     function uploadFile(file, s3Data, url){
+      console.log('starting upload for ' + file.name);
       const xhr = new XMLHttpRequest();
 
       xhr.upload.addEventListener("progress", updateProgress);
@@ -55,7 +59,7 @@
     /*
       Function to monitor the upload progress and update the html to reflect that
     */
-    function updateProgress (oEvent) {
+    function updateProgress(oEvent) {
         console.log('updateProgress running...');
         $('.progress').removeClass('hidden');
       if (oEvent.lengthComputable) {
@@ -72,16 +76,21 @@
       request.
     */
     function getSignedRequest(file){
+      console.log('starting getSignedRequest for ' + file.name);
       const xhr = new XMLHttpRequest();
+      console.log('making GET');
       xhr.open('GET', `/drinkinggourd/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+      console.log('made GET');
       xhr.onreadystatechange = () => {
         if(xhr.readyState === 4){
           if(xhr.status === 200){
+            console.log('xhr.status is 200 for the signed request');
             const response = JSON.parse(xhr.responseText);
             uploadFile(file, response.data, response.url);
           }
           else{
             alert('Could not get signed URL.');
+            console.log('could not get signed url');
           }
         }
       };
@@ -91,14 +100,18 @@
        Function called when "Upload" button is clicked. If there is a file selected, then
        start upload procedure by asking for a signed request from the app.
     */
-    function initUpload(){
-      const files = document.getElementById('file-input').files;
-      const file = files[0];
-      if(!file){
-        return alert('No file selected.');
-      }
-      getSignedRequest(file);
+    function initUpload() {
+        const files = document.getElementById('file-input').files;
+        if (files.length <= 0) {
+            return alert('No files selected.');
+        }
+        for (i = 0; i < files.length; i++) {
+            var file = files[i];
+            console.log('starting file ' + i);
+            getSignedRequest(file);
+        }
     }
+
 
     /*
        Bind listeners when the page loads.

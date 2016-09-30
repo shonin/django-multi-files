@@ -1,11 +1,10 @@
-from time import gmtime, strftime
 from django.db import models
+from django.utils import timezone
 
 class File(models.Model):
-    # file = models.FileField(upload_to=upload_file(), blank=True)
     name = models.CharField(max_length=300)
     description = models.TextField(blank=True)
-    upload_date = models.CharField(max_length=100, default=strftime("%Y%m%d%H%M%S", gmtime()))
+    upload_date = models.DateTimeField(editable=False)
     key = models.CharField(max_length=600, blank=True)
 
     def __str__(self):
@@ -13,10 +12,13 @@ class File(models.Model):
         return representation
 
     def generate_key(self):
-        key = '{date}__{name}'.format(date=self.upload_date, name=self.name)
+        time = self.upload_date.strftime('%Y%m%d_%H%M%S_%f')
+        key = '{time}__{name}'.format(time=time, name=self.name)
         return key
 
     def save(self, *args, **kwargs):
+        if not self.id:
+            self.upload_date = timezone.now()
         if not self.key:
             self.key = self.generate_key()
         super(File, self).save(*args, **kwargs)
