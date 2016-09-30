@@ -24,6 +24,7 @@ def direct(request):
         return HttpResponseRedirect('/drinkinggourd/')
 
 @csrf_exempt
+@login_required(login_url="/login/")
 def sign_s3(request):
     if request.method == 'GET':
         file_name = request.GET.get('file-name')
@@ -63,7 +64,6 @@ def home(request):
     files = File.objects.all()
     for file in files:
         try:
-            # file.upload_date = datetime.datetime.strptime(file.upload_date, "%Y%m%d%H%M%S")
             file.upload_date = file.upload_date.strftime('%b. %d, %Y')
         except Exception as e:
             print('\n\nEXCEPTION - Could not get date: {e}'.format(e=e))
@@ -74,7 +74,6 @@ def home(request):
 
 class EditFileView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
-
     model = File
     fields = ['name', 'description']
     template_name = 'edit_file.html'
