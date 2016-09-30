@@ -1,42 +1,111 @@
-# Drinking Gourd
+# Django & Javascript Multi File Upload to S3
 
-*A Django app built to run on Heroku, started from [Heroku's Django Starter
+*A Django app that uploads multiple files at once to Amazon S3 using javascript.
+Built to run on Heroku, and started from [Heroku's Django Starter
  Template](https://github.com/heroku/heroku-django-template), nice template,
 thanks.*
 
+*The majority of the underlying logic comes from @flyingsparx's
+[FlaskDirectUploader](https://github.com/flyingsparx/FlaskDirectUploader),
+and his guide for it
+ [here](https://devcenter.heroku.com/articles/s3-upload-python).*
+
 ## What this is:
 
-Users log in and upload files that get put in S3. Users can then edit the
-file to change the name and add a description. They can delete the file, which
-will also remove it from S3.
+This is a basic Django application that is doing essentially two things.
+1. The Django app is told about the selected files and returns a set of
+validation data to the client
+2. The client sends the validated request directly to your Amazon S3 Bucket
 
-Meant to be used to manage pre-production podcast recordings
+This comes with a lot of prebundled things that make this mostly ready to
+
 
 ## But what is it really?
 
-* Django Auth
-* Boto3 to wrap the S3 API
-* Direct to S3 uploads via javascript, preferable to having an open connection
-to the server while yuge files upload.
-* Bootstrap and jQuery
-* [WhiteNoise](https://warehouse.python.org/project/whitenoise/) for handling
-static assets on Heroku
+* `python 3.4`
+* `django 1.9`
+* `boto3`
 
-## What does the future hold?
+***
 
-* Upload multiple files at once
-* Upload file type protection to allow only `.wma` and `.mp3`
-* Convert WMA's to MP3's
-* Automatically add an into and an exit to an MP3 file
-* Upload finished podcast files to a [Libsyn](http://www.libsyn.com) FTP Server
-and schedule them for publication.
-* integrate a proper user facing site that plays the podcasts, like the one
-that I already built [here](drinkinggourd.herokuapp.com).
+# Get It Up and Running:
 
-#### thanks
+***
 
-* [Heroku's Django Starter
- Template](https://github.com/heroku/heroku-django-template)
-* @flyingsparx's  [FlaskDirectUploader](https://github.com/flyingsparx/FlaskDirectUploader)
-for a solid example of direct to s3 uploads using python and boto3
-* @narenaryan's blog post on using [Django's built in Auth](https://github.com/narenaryan/django-auth-pattern)
+## AWS Trickery:
+
+### Setup a Bucket in S3 with Correct Permissions:
+
+In AWS go to S3, and then create a new bucket. give it a name.   
+
+** Bucket -> Properites -> Permissions -> Edit CORS Configuration**  
+
+*Here is an example CORS configuration, you should probably have some more
+security on yours, but this is fine for development*
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <CORSRule>
+        <AllowedOrigin>*</AllowedOrigin>
+        <AllowedMethod>GET</AllowedMethod>
+        <AllowedMethod>POST</AllowedMethod>
+        <AllowedMethod>PUT</AllowedMethod>
+        <AllowedHeader>*</AllowedHeader>
+    </CORSRule>
+</CORSConfiguration>
+
+```
+If this isn't setup right you'll get errors on the upload saying `NotAllowed`
+or something similar
+
+### Get your Access Key and Secret Access Key
+
+I'm far from an AWS expert, but this is in IAM, go in there an make a new
+user, ***get the users keys***, and attach the policy `AmazonS3FullAccess` to the user.
+
+***
+
+## Setup the Django App
+
+uhhh... you have `virtualenv`, right?
+
+```shell
+$ mkvirtualenv multi-file
+(multi-file) $ git clone https://github.com/shonin/django-multi-files.git
+(multi-file) $ cd django-multi-files/
+(multi-file) $ pip install -r requirements.txt
+(multi-file) $ python manage.py makemigrations
+(multi-file) $ python manage.py migrate
+```
+### Gonna need some env vars
+
+*How you wanna do this is up to you, I use PyCharm.*
+
+***An excerpt from `settings.py`***
+```python
+import os
+...
+BUCKET = os.getenv('AWS_BUCKET_NAME')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+...
+```
+Those are the things you need for `boto3` to be able to do it's magic.
+
+***
+
+# Final Notes
+
+That's pretty much it. Checkout the `direct.html` file to see the javascript
+and look at the `sign_s3` view see how the python handles the request.
+
+*My javascript is pretty rough and hacked together. You might want to do
+something better with this for production*
+
+To see how I'm using this with some django auth for handling raw podcast data,
+see my [DrinkingGourd repo here](https://github.com/shonin/DrinkingGourd)
+
+If you have any issues getting this running, feel free to open an issue, I'm
+happy to help.
+
+Improvements? Open a PR!

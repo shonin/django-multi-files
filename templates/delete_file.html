@@ -1,5 +1,9 @@
-<form action="" method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm" />
-</form>
-<p><a href="{% url 'drinking_gourd:home' %}"><- Go Back Safely</a></p>
+{% extends 'base.html' %}
+
+{% block subcontent %}
+    <form action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" />
+    </form>
+    <p><a href="/"><- Go Back Safely</a></p>
+{% endblock %}

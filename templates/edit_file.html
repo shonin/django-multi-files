@@ -1,27 +1,17 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
-<div class="container">
-    <div class="row">
-        <div class="jumbotron">
-            <p><a href="{% url 'drinking_gourd:home' %}"><- Go Back</a></p>
-            <h4>Editing: {{ file.name }}</h4>
-            <audio controls>
-              <source src="https://s3.amazonaws.com/drinking-gourd/{{ file.key }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Send" />
-        </form>
-
+{% block subcontent %}
+    <div class="jumbotron">
+        <p><a href="/"><- Go Back</a></p>
+        <h4>Editing: {{ file.name }}</h4>
+        <a href="https://s3.amazonaws.com/{{ bucket_name }}/{{ file.key }}">
+            Download file
+        </a>
     </div>
-</div>
 
-
-
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Send" />
+    </form>
 {% endblock %}

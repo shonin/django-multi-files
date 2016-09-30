@@ -1,21 +1,18 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
-<div class="container">
-    <div class="row">
-        <div class="jumbotron">
-            <h1>Hello</h1>
-            <p>Here are the files we have stored in the cloud</p>
-            <br />
-            <a href="{% url 'drinking_gourd:direct' %}">
-                <button class="btn btn-primary">
-                    Upload Files
-                </button>
-            </a>
-        </div>
-        {% include 'partials/file_table.html' %}
+{% block subcontent %}
+    <div class="jumbotron">
+        <h1>Hello</h1>
+        <p>This is an example app meant to show how to upload multiple files at once to Amazon S3.</p>
+        <p>This is accomplished using <code>boto3</code> and some javascript.</p>
+        <p>The javascript around the upload form will request a signing key from boto, and then will send the
+            verified files to S3</p>
+        <br />
+        <a href="/upload">
+            <button class="btn btn-primary">
+                Upload Files
+            </button>
+        </a>
     </div>
-</div>
-
+    {% include 'partials/file_table.html' %}
 {% endblock %}

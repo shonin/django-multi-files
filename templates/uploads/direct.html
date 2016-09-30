@@ -90,7 +90,7 @@
       console.log('starting getSignedRequest for ' + file.name);
       const xhr = new XMLHttpRequest();
       console.log('making GET');
-      xhr.open('GET', `/drinkinggourd/sign-s3?file-name=${file.name}&file-type=${file.type}`);
+      xhr.open('GET', `/sign-s3?file-name=${file.name}&file-type=${file.type}`);
       console.log('made GET');
       xhr.onreadystatechange = () => {
         if(xhr.readyState === 4){
@@ -122,7 +122,6 @@
             getSignedRequest(file);
         }
     }
-
 
     /*
        Bind listeners when the page loads.
