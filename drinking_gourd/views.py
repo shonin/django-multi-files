@@ -65,7 +65,8 @@ def home(request):
         try:
             # file.upload_date = datetime.datetime.strptime(file.upload_date, "%Y%m%d%H%M%S")
             file.upload_date = file.upload_date.strftime('%b. %d, %Y')
-        except:
+        except Exception as e:
+            print('\n\nEXCEPTION - Could not get date: {e}'.format(e=e))
             file.upload_date = 'whoops'
 
     return render(request, "home.html", {'files': files})
