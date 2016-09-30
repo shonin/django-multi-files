@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block subcontent %}
-    <div id="success" class="alert alert-success hidden">
-        File Successfully Uploaded
-    </div>
-    <div id="failure" class="alert alert-danger hidden">
-        Failed to upload file
+    <div data-num='0' id="success" class="alert alert-success hidden">
+        <span id="success-message"></span>
+        <ul id="success-list"></ul>
     </div>
 
-    Select a File <input class="btn btn-default btn-file" id="file-input" type="file" multiple>
+    <div data-num='0' id="failure" class="alert alert-danger hidden">
+        <span id="failures-message"></span>
+        <ul id="failures-list"></ul>
+    </div>
+
+
     <br />
     <div id="uploads">
         <div style="max-width: 500px;" class="progress hidden">
@@ -16,9 +19,9 @@
           </div>
         </div>
     </div>
-
-
-    <br /><br /><br />
+    <br />
+    Select a File <input class="btn btn-default btn-file" id="file-input" type="file" multiple>
+    <br />
   <button id="startUpload" class="btn btn-primary">Start Upload</button>
 
 
@@ -47,9 +50,19 @@
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             $('#success').removeClass('hidden');
+            var num = $('#success').attr('data-num');
+            num ++;
+            $('#success').attr('data-num', num);
+            $('#success-message').html(num + ' File(s) Successfully Uploaded');
+            $('#success-list').append('<li>' + file.name + '</li>');
           }
           else{
             $('#failure').removeClass('hidden');
+            var num = $('#failure').attr('data-num');
+            num ++;
+            $('#failure').attr('data-num', num);
+            $('#failures-message').html(num + ' File(s) Successfully Uploaded');
+            $('#failures-list').append('<li>' + file.name + '</li>');
           }
         }
       };
